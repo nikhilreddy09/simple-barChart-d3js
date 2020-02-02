@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <style>
+    .modify {
+        border: 1px solid black;
+        margin-left: auto;
+        margin-right: auto;
+        
+    }
+    </style>
+</head>
+
+<body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <svg class="modify" width = 1000 , height = 500></svg>
+    <script>
+        d3.json('androiddata.json', function (err, data) {
+            console.log(data);
+            dataViz(data);
+        });
+
+        function dataViz(incomingdata) {
+
+            var maxMarket = d3.max(incomingdata, e1 => +e1.marketshare)
+            console.log(maxMarket)
+            var minMarket = d3.min(incomingdata, e1 => +e1.marketshare)
+            console.log(minMarket)
+
+            var scale = d3.scaleLinear().domain([0, maxMarket]).range([0, 450])
+
+            
+
+
+                d3.select("svg")
+                .selectAll("rect")
+                .data(incomingdata)
+                .enter()
+                .append("rect")
+                .attr("width", 80)
+                .attr("height", d => scale(d.marketshare))
+                .attr("x", (d, i) => i * 85)
+                .attr("y", d => 500 - scale(d.marketshare))
+                .style("fill", "#132e44")
+                .style("stroke", "#38332d")
+                .style("stroke-width", "1 px")
+        }
+    </script>
+</body>
+
+</html>
